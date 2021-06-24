@@ -1,0 +1,37 @@
+service: clinicians-api
+
+package:
+  individually: true
+
+plugins:
+  - serverless-bundle # Package lambdas with Webpack
+  - serverless-dotenv-plugin # allow .env environment variables
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${sls:stage}
+  region: us-west-2
+  apiGateway:
+    apiKeys:
+      - eapProviders:
+        - ${opt:stage}-thirdPartyApiKey
+    usagePlan:
+      - eapProviders:
+          quota:
+            limit: 10000
+            offset: 2
+            period: MONTH
+          throttle:
+            burstLimit: 2000
+            rateLimit: 1000
+
+
+functions:
+  list:
+    handler: list.handler
+    events:
+      - http:
+          path: clinicians
+          method: get
+          private: true

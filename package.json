@@ -1,0 +1,19 @@
+{
+  "name": "monarch-api-gateway",
+  "version": "0.0.1",
+  "description": "An API gateway to provide third party access to Monarch functionality.",
+  "main": "index.js",
+  "scripts": {
+    "test": "serverless-bundle test"
+  },
+  "author": "SimplePractice",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.933.0",
+    "serverless-bundle": "^4.3.1",
+    "serverless-dotenv-plugin": "^3.9.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
