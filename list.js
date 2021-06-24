@@ -1,16 +1,23 @@
 const axios = require("axios");
+const JSONAPIDeserializer = require("jsonapi-serializer").Deserializer;
 
 exports.handler = async(event) => {
-  const clinicians = await axios.get("https://meetmonarch.com/api/clinicians");
-
-  let resp = { data: [] };
-
-  clinicians.data.data.forEach(c => {
-    resp.data.push(c);
+  const cliniciansSerialized = await axios.get("https://rev01.monarch-staging.com/api/clinicians",{
+    headers: {
+      Authorization: "Basic YmV0YTpoZWFsdGgxMw=="
+    }
   });
+
+  let clinicians = null;
+  const cliniciansDeserialized = new JSONAPIDeserializer();
+  try {
+    clinicians = await cliniciansDeserialized.deserialize(cliniciansSerialized.data);
+  } catch (e) {
+    console.log(e.message);
+  }
 
   return {
     statusCode: 200,
-    body: { test: 1 }
+    body: JSON.stringify(clinicians)
   };
 };
