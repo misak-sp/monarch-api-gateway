@@ -2,7 +2,8 @@ const axios = require("axios");
 const JSONAPIDeserializer = require("jsonapi-serializer").Deserializer;
 
 exports.handler = async(event) => {
-  const cliniciansSerialized = await axios.get("https://rev01.monarch-staging.com/api/clinicians",{
+  const baseUri = "https://qa02.monarch-staging.com/api/clinicians";
+  const cliniciansSerialized = await axios.get(`${baseUri}?page[size]=20&page[number]=100`, {
     headers: {
       Authorization: "Basic YmV0YTpoZWFsdGgxMw=="
     }
@@ -17,7 +18,13 @@ exports.handler = async(event) => {
   }
 
   return {
-    statusCode: 200,
-    body: JSON.stringify(clinicians)
+    "data": clinicians,
+    "meta": {
+      "page": cliniciansSerialized.data.meta.query.page,
+      "perPage": cliniciansSerialized.data.meta.query.perPage,
+      "pageCount": cliniciansSerialized.data.meta.pageCount,
+      "recordCount": cliniciansSerialized.data.meta.recordCount
+    },
+    "apiUrl": baseUri
   };
 };

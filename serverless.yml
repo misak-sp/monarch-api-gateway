@@ -34,4 +34,9 @@ functions:
       - http:
           path: clinicians
           method: get
+          integration: lambda
           private: true
+          response:
+            template: ${file(templates/clinicians-output)}
+            schemas:
+              application/json: ${file(models/clinicians-output.json)}

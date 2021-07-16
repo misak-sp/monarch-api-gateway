@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CliniciansOutputModel",
+  "type": "object",
+  "properties": {
+    "clinicians": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "middleName": { "type": "string" },
+          "displayName": { "type": "string" }
+        }
+      }
+    }
+  }
+}

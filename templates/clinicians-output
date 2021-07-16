@@ -1,0 +1,33 @@
+#set($inputRoot = $input.path('$'))
+{
+  "data": [
+  #foreach($elem in $inputRoot.data)
+  {
+    "id": "$elem.id",
+    "firstName": "$elem.first-name",
+    "lastName": "$elem.last-name",
+    "displayName": "$elem.display-name",
+    "publicURL": "$inputRoot.apiUrl/$elem.slug",
+    "npiNumber": "$elem.npi-number",
+    "bio": "$elem.bio",
+    "socialMedia": {
+      "facebookUrl": "$elem.facebook-url",
+      "twitterUrl": "$elem.twitter-url",
+      "instagramUrl": "$elem.instagram-url",
+      "yelpUrl": "$elem.yelp-url",
+      "youtubeUrl": "$elem.youtube-url",
+      "linkedinUrl": "$elem.linkedin-url"
+    }
+  }
+  #if($foreach.hasNext),#end
+  #end
+  ],
+  "meta": {
+    "pagination": {
+      "page": $inputRoot.meta.page,
+      "perPage": $inputRoot.meta.perPage,
+      "pageCount": $inputRoot.meta.pageCount
+    },
+    "recordCount": $inputRoot.meta.recordCount
+  }
+}
