@@ -4,30 +4,103 @@
   #foreach($elem in $inputRoot.data)
   {
     "id": "$elem.id",
-    "firstName": "$elem.first-name",
-    "lastName": "$elem.last-name",
-    "displayName": "$elem.display-name",
-    "publicURL": "$inputRoot.apiUrl/$elem.slug",
-    "npiNumber": "$elem.npi-number",
+    "first_name": "$elem.first-name",
+    "last_name": "$elem.last-name",
+    "middle_name": "$elem.middle-name",
+    "suffix": "$elem.suffix",
+    "display_name": "$elem.display-name",
+    "public_url": "$inputRoot.api_url/therapist/$elem.slug",
     "bio": "$elem.bio",
-    "socialMedia": {
-      "facebookUrl": "$elem.facebook-url",
-      "twitterUrl": "$elem.twitter-url",
-      "instagramUrl": "$elem.instagram-url",
-      "yelpUrl": "$elem.yelp-url",
-      "youtubeUrl": "$elem.youtube-url",
-      "linkedinUrl": "$elem.linkedin-url"
+    "gender": [
+    #foreach($gender in $elem.gender)
+      "$gender.name"#if($foreach.hasNext),#end
+    #end
+    ],
+    "pronouns": [
+    #foreach($pronoun in $elem.pronouns)
+      "$pronoun.name"#if($foreach.hasNext),#end
+    #end
+    ],
+    "race_ethnicities": [
+    #foreach($re in $elem.race-ethnicities)
+      "$re.name"#if($foreach.hasNext),#end
+    #end
+    ],
+    "profile_image": {
+      "image_url": "$elem.profile-img-url",
+      "thumbnail_url": "$elem.profile-img-thumb-url",
+      "thumbnail_webp_url": "$elem.profile-img-thumb-webp-url"
+    },
+    "social_media": {
+      "facebook": "$elem.facebook-url",
+      "twitter": "$elem.twitter-url",
+      "instagram": "$elem.instagram-url",
+      "yelp": "$elem.yelp-url",
+      "youtube": "$elem.youtube-url",
+      "linkedin": "$elem.linkedin-url"
+    },
+    "professional_details": {
+      "title": "$elem.title",
+      "profession_name": "$elem.global-profession-name",
+      "npi_number": "$elem.npi-number"
+    },
+    "service_details": {
+      "services": [
+      #foreach($service in $elem.all-services)
+        "$service.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "specialties": [
+      #foreach($specialty in $elem.all-specialties)
+        "$specialty.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "fees": $elem.fees
+    },
+    "population_focus": {
+      "age_groups": [
+      #foreach($ageGroup in $elem.age-groups)
+        "$ageGroup.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "faiths": [
+      #foreach($faith in $elem-faiths)
+        "$faith.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "communities": [
+      #foreach($community in $elem.communities)
+        "$community.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "languages": [
+      #foreach($lang in $elem.languages)
+        "$lang.name"#if($foreach.hasNext),#end
+      #end
+      ]
+    },
+    "booking_details": {
+      "appointment_types": [
+      #foreach($tt in $elem.treatment-types)
+        "$tt.name"#if($foreach.hasNext),#end
+      #end
+      ],
+      "availabilities": {
+        "nights": $elem.availability-on-nights-indicator,
+        "weekends": $elem.availability-on-weekends-indicator,
+        "in_person_appointments": $elem.in-person-appointments-indicator
+      },
+      "free_consultation": $elem.free-consultations-indicator
     }
-  }
-  #if($foreach.hasNext),#end
+  }#if($foreach.hasNext),#end
   #end
   ],
   "meta": {
     "pagination": {
       "page": $inputRoot.meta.page,
-      "perPage": $inputRoot.meta.perPage,
-      "pageCount": $inputRoot.meta.pageCount
+      "per_page": $inputRoot.meta.per_page,
+      "page_count": $inputRoot.meta.page_count
     },
-    "recordCount": $inputRoot.meta.recordCount
+    "record_count": $inputRoot.meta.record_count
   }
 }

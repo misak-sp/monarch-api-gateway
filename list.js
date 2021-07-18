@@ -2,8 +2,8 @@ const axios = require("axios");
 const JSONAPIDeserializer = require("jsonapi-serializer").Deserializer;
 
 exports.handler = async(event) => {
-  const baseUri = "https://qa02.monarch-staging.com/api/clinicians";
-  const cliniciansSerialized = await axios.get(`${baseUri}?page[size]=20&page[number]=100`, {
+  const baseUri = "https://qa02.monarch-staging.com";
+  const cliniciansSerialized = await axios.get(`${baseUri}/api/clinicians`, {
     headers: {
       Authorization: "Basic YmV0YTpoZWFsdGgxMw=="
     }
@@ -21,10 +21,10 @@ exports.handler = async(event) => {
     "data": clinicians,
     "meta": {
       "page": cliniciansSerialized.data.meta.query.page,
-      "perPage": cliniciansSerialized.data.meta.query.perPage,
-      "pageCount": cliniciansSerialized.data.meta.pageCount,
-      "recordCount": cliniciansSerialized.data.meta.recordCount
+      "per_page": cliniciansSerialized.data.meta.query.perPage,
+      "page_count": cliniciansSerialized.data.meta.pageCount,
+      "record_count": cliniciansSerialized.data.meta.recordCount
     },
-    "apiUrl": baseUri
+    "api_url": baseUri
   };
 };
