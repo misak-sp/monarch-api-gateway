@@ -5,12 +5,12 @@ exports.handler = async(event) => {
   console.log("EVENT DUMP:", event);
   const page = event.query.page || 1;
   const count = event.query.count || 10;
-  const baseUri = "https://qa02.monarch-staging.com";
-  const cliniciansSerialized = await axios.get(`${baseUri}/api/clinicians?page[number]=${page}&page[size]=${count}`, {
-    headers: {
-      Authorization: "Basic YmV0YTpoZWFsdGgxMw=="
-    }
-  });
+  const baseUri = process.env.MONARCH_BASE_URL;
+  let headers = {};
+  if (process.env.MONARCH_BASIC_AUTH) {
+    headers['Authorization'] = process.env.MONARCH_BASIC_AUTH;
+  }
+  const cliniciansSerialized = await axios.get(`${baseUri}/api/clinicians?page[number]=${page}&page[size]=${count}`, { headers });
 
   let clinicians = null;
   const cliniciansDeserialized = new JSONAPIDeserializer();

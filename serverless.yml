@@ -5,13 +5,14 @@ package:
 
 plugins:
   - serverless-bundle # Package lambdas with Webpack
-  - serverless-dotenv-plugin # allow .env environment variables
+  - serverless-add-api-key # allow re-using of apiKeys across services
 
 provider:
   name: aws
   runtime: nodejs14.x
-  stage: ${sls:stage}
+  stage: ${opt:stage,'dev'}
   region: us-west-2
+  lambdaHashingVersion: 20201221
   apiGateway:
     apiKeys:
       - eapProviders:
@@ -30,6 +31,9 @@ provider:
 functions:
   list:
     handler: list.handler
+    environment:
+      MONARCH_BASE_URL: ${ssm:/${opt:stage,'dev'}-api-url}
+      MONARCH_BASIC_AUTH: ${ssm:/${opt:stage,'dev'}-basic-auth}
     events:
       - http:
           path: clinicians
@@ -38,5 +42,3 @@ functions:
           private: true
           response:
             template: ${file(templates/clinicians-output)}
-            schemas:
-              application/json: ${file(models/clinicians-output.json)}
